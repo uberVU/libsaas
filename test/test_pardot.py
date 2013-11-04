@@ -1,4 +1,4 @@
-import json
+import random
 import unittest
 
 from libsaas.executors import test_executor
@@ -37,3 +37,15 @@ class PardotTestCase(unittest.TestCase):
                   'format': 'json'}
         service.prospects().get()
         self.expect('POST', '/prospect/version/3/do/query', params)
+
+    def test_update_prospects(self):
+        prospect_id = random.randint(3, 100)
+        data = {'name': 'Test'}
+        params = {'api_key': 'api_key',
+                  'user_key': 'user_key',
+                  'format': 'json',
+                  'id': prospect_id}
+        params.update(data)
+
+        self.service.prospect().update(id=prospect_id, data=data)
+        self.expect('POST', '/prospect/version/3/do/update', params)
